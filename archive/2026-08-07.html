@@ -1,0 +1,686 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Daily News Dashboard — Friday 7 August 2026</title>
+<style>
+  :root {
+    --bg: #ffffff;
+    --ink: #121212;
+    --ink-soft: #444444;
+    --ink-faint: #888888;
+    --rule: #e2e2e2;
+    --rule-dark: #121212;
+    --thumb-bg: #f2f0ec;
+    --uk: #1d4ed8;
+    --whatson: #b45309;
+    --hk: #b91c1c;
+    --global: #0f766e;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #121417;
+      --ink: #e8e6e3;
+      --ink-soft: #b3b0ab;
+      --ink-faint: #7c7973;
+      --rule: #2b2e33;
+      --rule-dark: #e8e6e3;
+      --thumb-bg: #22252a;
+      --uk: #82a5f5;
+      --whatson: #e5a663;
+      --hk: #ef8f8f;
+      --global: #5cc4b8;
+    }
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: georgia, "times new roman", "Songti TC", "PingFang HK", serif;
+    line-height: 1.5;
+    padding: 0 20px 60px;
+  }
+  body[data-lang="en"] .zh { display: none; }
+  body[data-lang="zh"] .en { display: none; }
+  .wrap { max-width: 980px; margin: 0 auto; }
+
+  .toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang HK", sans-serif;
+    font-size: 0.78rem;
+    color: var(--ink-soft);
+    border-bottom: 1px solid var(--rule);
+    flex-wrap: wrap;
+  }
+  .toolbar .controls { display: flex; gap: 8px; align-items: center; }
+  .toolbar select, .toolbar button {
+    font-family: inherit;
+    font-size: 0.78rem;
+    color: var(--ink);
+    background: var(--bg);
+    border: 1px solid var(--rule);
+    border-radius: 3px;
+    padding: 4px 9px;
+    cursor: pointer;
+  }
+  .toolbar button:hover, .toolbar select:hover { border-color: var(--ink-faint); }
+
+  .masthead { text-align: center; padding: 26px 0 18px; }
+  .masthead h1 {
+    font-size: clamp(2rem, 5vw, 3rem);
+    font-weight: 700;
+    letter-spacing: 0.01em;
+  }
+  .masthead .edition {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang HK", sans-serif;
+    font-size: 0.8rem;
+    color: var(--ink-faint);
+    margin-top: 6px;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+  }
+  .rules { border-top: 3px double var(--rule-dark); margin-bottom: 1px; }
+  .rules2 { border-top: 1px solid var(--rule-dark); }
+
+  .filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2px 22px;
+    justify-content: center;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--rule);
+    margin-bottom: 34px;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang HK", sans-serif;
+  }
+  .chip {
+    background: none;
+    border: none;
+    font-size: 0.82rem;
+    color: var(--ink-soft);
+    cursor: pointer;
+    padding: 4px 2px;
+    border-bottom: 2px solid transparent;
+  }
+  .chip:hover { color: var(--ink); }
+  .chip.active { color: var(--ink); font-weight: 700; border-bottom-color: var(--ink); }
+
+  section { margin-bottom: 48px; }
+  .kicker {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang HK", sans-serif;
+    font-size: 0.82rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    padding-bottom: 6px;
+    border-bottom: 1px solid var(--rule-dark);
+    margin-bottom: 22px;
+  }
+  section.uk .kicker, section.uk .cat { color: var(--uk); }
+  section.whatson .kicker, section.whatson .cat { color: var(--whatson); }
+  section.hk .kicker, section.hk .cat { color: var(--hk); }
+  section.global .kicker, section.global .cat { color: var(--global); }
+
+  .lead {
+    display: grid;
+    grid-template-columns: 1fr 1.1fr;
+    gap: 26px;
+    padding-bottom: 22px;
+    border-bottom: 1px solid var(--rule);
+    margin-bottom: 4px;
+  }
+  .lead .thumb { width: 100%; aspect-ratio: 3 / 2; }
+  .lead a.headline { font-size: 1.55rem; line-height: 1.25; }
+  .lead p { font-size: 1rem; margin-top: 10px; }
+
+  .row {
+    display: flex;
+    gap: 20px;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: 16px 0;
+    border-bottom: 1px solid var(--rule);
+  }
+  .row .txt { flex: 1; }
+  .row .thumb { width: 150px; aspect-ratio: 3 / 2; flex-shrink: 0; }
+  .row a.headline { font-size: 1.08rem; line-height: 1.3; }
+  .row p { font-size: 0.9rem; margin-top: 5px; }
+
+  a.headline { color: var(--ink); font-weight: 700; text-decoration: none; }
+  a.headline:hover { text-decoration: underline; }
+  p.summary { color: var(--ink-soft); }
+  .thumb {
+    object-fit: cover;
+    background: var(--thumb-bg);
+    display: block;
+    border-radius: 2px;
+  }
+  .thumb.ph {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.8rem;
+    opacity: 0.7;
+  }
+  .meta {
+    display: block;
+    margin-top: 9px;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang HK", sans-serif;
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+  }
+  .meta .cat { text-transform: none; letter-spacing: 0.02em; margin-right: 10px; }
+  .hide { display: none; }
+  .card.hide { display: none; }
+  .empty-msg {
+    text-align: center;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang HK", sans-serif;
+    font-size: 0.9rem;
+    font-style: italic;
+    color: var(--ink-faint);
+    padding: 40px 0;
+  }
+
+  .buzz-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 26px;
+  }
+  .buzz-col h3 {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang HK", sans-serif;
+    font-size: 0.78rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--ink-faint);
+    margin-bottom: 10px;
+  }
+  .buzz-col li {
+    list-style: none;
+    padding: 7px 0;
+    border-bottom: 1px solid var(--rule);
+    font-size: 0.92rem;
+  }
+  .buzz-col a { color: var(--ink); text-decoration: none; }
+  .buzz-col a:hover { text-decoration: underline; }
+  .brief { margin-top: 26px; }
+  .brief h3 {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang HK", sans-serif;
+    font-size: 0.78rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--ink-faint);
+    margin-bottom: 10px;
+  }
+  .brief-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0 26px;
+  }
+  .brief-grid li {
+    list-style: none;
+    padding: 7px 0;
+    border-bottom: 1px solid var(--rule);
+    font-size: 0.92rem;
+  }
+  .brief-grid a { color: var(--ink); text-decoration: none; }
+  .brief-grid a:hover { text-decoration: underline; }
+  .brief-grid .src {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang HK", sans-serif;
+    font-size: 0.68rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--ink-faint);
+    margin-left: 6px;
+  }
+  @media (max-width: 640px) { .brief-grid { grid-template-columns: 1fr; } }
+  .note {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang HK", sans-serif;
+    font-size: 0.76rem;
+    font-style: italic;
+    color: var(--ink-faint);
+    padding-top: 12px;
+  }
+
+  footer {
+    padding-top: 16px;
+    border-top: 3px double var(--rule-dark);
+    color: var(--ink-faint);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang HK", sans-serif;
+    font-size: 0.75rem;
+    text-align: center;
+  }
+  @media (max-width: 640px) {
+    .lead { grid-template-columns: 1fr; }
+    .row .thumb { width: 104px; }
+    .buzz-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body data-lang="en">
+<div class="wrap">
+
+  <div class="toolbar">
+    <div class="date-line"><span class="en">Friday 7 August 2026 · Generated 10:18 UK time</span><span class="zh">2026年8月7日（星期五）· 10:18（英國時間）生成</span></div>
+    <div class="controls">
+      <select id="dateSel" aria-label="Select date">
+        <option value="dashboard.html" selected>7 Aug 2026 (Latest)</option>
+        <option value="archive/2026-08-04.html">4 Aug 2026</option>
+        <option value="archive/2026-08-03.html">3 Aug 2026</option>
+        <option value="archive/2026-08-02.html">2 Aug 2026</option>
+        <option value="archive/2026-08-01.html">1 Aug 2026</option>
+        <option value="archive/2026-07-31.html">31 Jul 2026</option>
+        <option value="archive/2026-07-29.html">29 Jul 2026</option>
+        <option value="archive/2026-07-28.html">28 Jul 2026</option>
+        <option value="archive/2026-07-27.html">27 Jul 2026</option>
+        <option value="archive/2026-07-26.html">26 Jul 2026</option>
+      </select>
+      <button id="refreshBtn" type="button" title="Fetch fresh news now — takes 3–5 minutes (works when opened via http://localhost:8793). The daily edition also auto-generates at 8:00 AM.">⟳ <span class="en">Refresh</span><span class="zh">重新整理</span></button>
+      <button id="langBtn" type="button"><span class="en">中文</span><span class="zh">EN</span></button>
+    </div>
+  </div>
+
+  <div class="masthead">
+    <h1><span class="en">Daily News Dashboard</span><span class="zh">每日新聞總覽</span></h1>
+    <div class="edition"><span class="en">United Kingdom · What's On London · Hong Kong · Global</span><span class="zh">英國 · 倫敦好去處 · 香港 · 國際</span></div>
+  </div>
+  <div class="rules"></div>
+  <div class="rules2"></div>
+
+  <div class="filters" id="filters">
+    <button class="chip active" data-cat="all" type="button"><span class="en">All</span><span class="zh">全部</span></button>
+    <button class="chip" data-cat="politics" type="button"><span class="en">Politics</span><span class="zh">政治</span></button>
+    <button class="chip" data-cat="business" type="button"><span class="en">Business</span><span class="zh">商業</span></button>
+    <button class="chip" data-cat="health" type="button"><span class="en">Health</span><span class="zh">健康</span></button>
+    <button class="chip" data-cat="weather" type="button"><span class="en">Weather &amp; Climate</span><span class="zh">天氣氣候</span></button>
+    <button class="chip" data-cat="conflict" type="button"><span class="en">Conflict</span><span class="zh">衝突局勢</span></button>
+    <button class="chip" data-cat="tech" type="button"><span class="en">Tech</span><span class="zh">科技</span></button>
+    <button class="chip" data-cat="society" type="button"><span class="en">Society</span><span class="zh">社會</span></button>
+    <button class="chip" data-cat="whatson" type="button"><span class="en">What's On</span><span class="zh">好去處</span></button>
+  </div>
+
+  <section class="uk">
+    <div class="kicker">🇬🇧 <span class="en">United Kingdom</span><span class="zh">英國</span></div>
+    <div class="lead card" data-cat="politics">
+      <div class="txt">
+        <a class="headline" href="https://www.bbc.co.uk/news/articles/cd69x9j46xjo" target="_blank" rel="noopener"><span class="en">Conservatives pledge to ban foreign nationals from social housing</span><span class="zh">保守黨承諾禁止外國國民申請社會房屋</span></a>
+        <p class="summary"><span class="en">The party says around 230,000 homes could become available under its plan to limit social housing entitlements to UK nationals.</span><span class="zh">保守黨表示，限制社會房屋福利予英國公民的計劃，可望釋出約23萬個單位。</span></p>
+        <span class="meta"><span class="cat"><span class="en">Politics</span><span class="zh">政治</span></span>BBC</span>
+      </div>
+      <img class="thumb" src="https://ichef.bbci.co.uk/ace/branded_news/1200/cpsprodpb/9b26/live/c25196e0-91ae-11f1-9c12-47c0acd34ba6.jpg" alt="" loading="lazy">
+    </div>
+    <div class="row card" data-cat="society">
+      <div class="txt">
+        <a class="headline" href="https://news.sky.com/story/female-police-officer-seriously-bitten-during-anti-migrant-disorder-13570392" target="_blank" rel="noopener"><span class="en">Female police officer 'seriously bitten' during anti-migrant violence</span><span class="zh">反移民騷亂中女警遭「嚴重咬傷」</span></a>
+        <p class="summary"><span class="en">Four people are arrested after an officer was seriously bitten and another hit with a rock during two nights of disorder in Norfolk.</span><span class="zh">諾福克郡連續兩晚騷亂中，一名女警遭嚴重咬傷、另一人被石塊擊中，警方拘捕四人。</span></p>
+        <span class="meta"><span class="cat"><span class="en">Society</span><span class="zh">社會</span></span>Sky News</span>
+      </div>
+      <div class="thumb ph">📰</div>
+    </div>
+    <div class="row card" data-cat="weather">
+      <div class="txt">
+        <a class="headline" href="https://www.bbc.co.uk/weather/articles/c99872dyym1o" target="_blank" rel="noopener"><span class="en">Village sees record 50 days without rain during summer heatwave</span><span class="zh">熱浪持續 薩里村莊創50日無雨紀錄</span></a>
+        <p class="summary"><span class="en">Wisley in Surrey has recorded no rain for 50 consecutive days, with little relief in sight as the heatwave continues.</span><span class="zh">薩里郡Wisley連續50日錄得零降雨，熱浪未見緩解跡象。</span></p>
+        <span class="meta"><span class="cat"><span class="en">Weather &amp; Climate</span><span class="zh">天氣氣候</span></span>BBC</span>
+      </div>
+      <img class="thumb" src="https://ichef.bbci.co.uk/ace/branded_weather/1200/cpsprodpb/77fe/live/ac89ea30-9229-11f1-a7ab-8b30adf0800a.jpg" alt="" loading="lazy">
+    </div>
+    <div class="row card" data-cat="business">
+      <div class="txt">
+        <a class="headline" href="https://news.sky.com/story/easyjet-agrees-to-57bn-takeover-13570486" target="_blank" rel="noopener"><span class="en">EasyJet agrees to £5.7bn takeover</span><span class="zh">廉航EasyJet同意接受57億英鎊收購</span></a>
+        <p class="summary"><span class="en">The no-frills airline agrees to be bought by US investment firm Apollo after a rival suitor drops out.</span><span class="zh">在對手退出競購後，廉航EasyJet同意被美國投資公司Apollo收購。</span></p>
+        <span class="meta"><span class="cat"><span class="en">Business</span><span class="zh">商業</span></span>Sky News</span>
+      </div>
+      <div class="thumb ph">📰</div>
+    </div>
+    <div class="row card" data-cat="tech">
+      <div class="txt">
+        <a class="headline" href="https://www.theguardian.com/technology/2026/aug/05/self-driving-taxis-approved-london-summer-2026-wayve-uber" target="_blank" rel="noopener"><span class="en">'Leicester Square, please guv': self-driving taxis cleared for London streets 'later this summer'</span><span class="zh">「去萊斯特廣場」自動駕駛的士「今夏稍後」駛上倫敦街頭</span></a>
+        <p class="summary"><span class="en">Uber and Wayve win London's first licence for autonomous cabs from TfL, though vehicles will keep a safety driver at first.</span><span class="zh">Uber與Wayve取得倫敦交通局首個自動的士牌照，車輛初期仍設安全司機。</span></p>
+        <span class="meta"><span class="cat"><span class="en">Tech</span><span class="zh">科技</span></span>The Guardian</span>
+      </div>
+      <img class="thumb" src="https://i.guim.co.uk/img/media/72f67547439060c547be790936d8923f19e398ae/341_0_3413_2731/master/3413.jpg?width=1200&amp;height=630&amp;quality=85&amp;auto=format&amp;fit=crop&amp;precrop=40:21,offset-x50,offset-y0&amp;overlay-align=bottom%2Cleft&amp;overlay-width=100p&amp;overlay-base64=L2ltZy9zdGF0aWMvb3ZlcmxheXMvdGctZGVmYXVsdC5wbmc&amp;enable=upscale&amp;s=bba8685f0723afa8d67f440e11d765d0" alt="" loading="lazy">
+    </div>
+    <div class="row card" data-cat="politics">
+      <div class="txt">
+        <a class="headline" href="https://www.theguardian.com/uk-news/2026/aug/06/asylum-seekers-deported-one-in-one-out-returned-to-uk" target="_blank" rel="noopener"><span class="en">Nearly 50 asylum seekers deported under 'one in one out' scheme have returned to the UK</span><span class="zh">近50名依「一換一」計劃遣返的尋求庇護者已重返英國</span></a>
+        <p class="summary"><span class="en">The figure raises questions about the UK-France deal, despite ministers insisting repeat arrivals will be removed.</span><span class="zh">儘管部長堅稱會遣走再度抵英者，數字引發外界質疑英法協議成效。</span></p>
+        <span class="meta"><span class="cat"><span class="en">Politics</span><span class="zh">政治</span></span>The Guardian</span>
+      </div>
+      <img class="thumb" src="https://i.guim.co.uk/img/media/5c651fe8dbb074643c0ecf429d3c9314d0ce8e6a/86_0_2501_2001/master/2501.jpg?width=1200&amp;height=630&amp;quality=85&amp;auto=format&amp;fit=crop&amp;precrop=40:21,offset-x50,offset-y0&amp;overlay-align=bottom%2Cleft&amp;overlay-width=100p&amp;overlay-base64=L2ltZy9zdGF0aWMvb3ZlcmxheXMvdGctZGVmYXVsdC5wbmc&amp;enable=upscale&amp;s=cfbfa67baa47063e8776453cc63cb196" alt="" loading="lazy">
+    </div>
+    <div class="row card" data-cat="society">
+      <div class="txt">
+        <a class="headline" href="https://www.bbc.co.uk/news/articles/c0rd9y99grzo" target="_blank" rel="noopener"><span class="en">Met Police boss admits mistake over plagiarism row</span><span class="zh">倫敦警察廳廳長承認抄襲風波處理失誤</span></a>
+        <p class="summary"><span class="en">Sir Mark Rowley says his force "dropped the ball" after investigating a reporter looking into claims about academic Jason Arday.</span><span class="zh">廳長羅利承認，警方在調查一名追查學者Jason Arday指控的記者時「處理失當」。</span></p>
+        <span class="meta"><span class="cat"><span class="en">Society</span><span class="zh">社會</span></span>BBC</span>
+      </div>
+      <img class="thumb" src="https://ichef.bbci.co.uk/ace/branded_news/1200/cpsprodpb/37aa/live/df067740-91bf-11f1-b2ab-0dd01740f9f6.png" alt="" loading="lazy">
+    </div>
+    <div class="row card" data-cat="business">
+      <div class="txt">
+        <a class="headline" href="https://www.itv.com/news/meridian/2026-08-04/gatwick-to-open-second-runway-as-campaigners-lose-bid-to-challenge-expansion" target="_blank" rel="noopener"><span class="en">Gatwick to open second runway as campaigners lose Court of Appeal bid</span><span class="zh">蓋特威克機場擴建第二條跑道 上訴失敗</span></a>
+        <p class="summary"><span class="en">The £2.2bn project will allow about 100,000 more flights a year at Britain's second-busiest airport.</span><span class="zh">涉資22億英鎊的擴建工程料令英國第二大機場每年多容納約10萬班航班。</span></p>
+        <span class="meta"><span class="cat"><span class="en">Business</span><span class="zh">商業</span></span>ITV News</span>
+      </div>
+      <div class="thumb ph">📰</div>
+    </div>
+  </section>
+
+  <section class="whatson">
+    <div class="kicker">🎡 <span class="en">What's On · London</span><span class="zh">倫敦好去處</span></div>
+    <div class="lead card" data-cat="whatson">
+      <div class="txt">
+        <a class="headline" href="https://www.timeout.com/london/news/time-out-market-london-piccadilly-080626" target="_blank" rel="noopener"><span class="en">The first ever Time Out Market London is coming to Piccadilly</span><span class="zh">首個Time Out Market倫敦店進駐皮卡迪利</span></a>
+        <p class="summary"><span class="en">A major new food hall from the Time Out Market brand is set to open in the heart of the West End.</span><span class="zh">Time Out Market品牌全新美食廣場將於西區核心地帶開幕。</span></p>
+        <span class="meta"><span class="cat"><span class="en">What's On</span><span class="zh">好去處</span></span>Time Out London</span>
+      </div>
+      <img class="thumb" src="https://media.timeout.com/images/106433727/image.jpg" alt="" loading="lazy">
+    </div>
+    <div class="row card" data-cat="whatson">
+      <div class="txt">
+        <a class="headline" href="https://www.timeout.com/london/news/blue-note-jazz-club-london-opening-date-080626" target="_blank" rel="noopener"><span class="en">Legendary jazz club Blue Note has revealed the opening date of its first London venue</span><span class="zh">傳奇爵士俱樂部Blue Note公布倫敦首店開幕日期</span></a>
+        <p class="summary"><span class="en">Grammy-winning pianist Robert Glasper will headline the opening of the New York club's Covent Garden debut.</span><span class="zh">格林美得獎鋼琴家Robert Glasper將擔綱這間紐約俱樂部Covent Garden分店開幕演出。</span></p>
+        <span class="meta"><span class="cat"><span class="en">What's On</span><span class="zh">好去處</span></span>Time Out London</span>
+      </div>
+      <img class="thumb" src="https://media.timeout.com/images/106434071/image.jpg" alt="" loading="lazy">
+    </div>
+    <div class="row card" data-cat="whatson">
+      <div class="txt">
+        <a class="headline" href="https://www.timeout.com/london/news/diana-princess-wales-playground-kensington-gardens-revamp-080626" target="_blank" rel="noopener"><span class="en">Every new feature at the reopened Diana Princess of Wales playground</span><span class="zh">戴安娜王妃紀念遊樂場重開 新增設施一覽</span></a>
+        <p class="summary"><span class="en">Kensington Gardens' much-loved playground has reopened with a raft of new features for families.</span><span class="zh">肯辛頓花園深受歡迎的遊樂場重新開放，新增多項親子設施。</span></p>
+        <span class="meta"><span class="cat"><span class="en">What's On</span><span class="zh">好去處</span></span>Time Out London</span>
+      </div>
+      <img class="thumb" src="https://media.timeout.com/images/106434475/image.jpg" alt="" loading="lazy">
+    </div>
+    <div class="row card" data-cat="whatson">
+      <div class="txt">
+        <a class="headline" href="https://www.timeout.com/london/news/open-house-2026-best-homes-080626" target="_blank" rel="noopener"><span class="en">6 stunning London homes you can explore for free in Open House 2026</span><span class="zh">Open House 2026：6間可免費參觀的倫敦靚宅</span></a>
+        <p class="summary"><span class="en">Time Out picks six standout properties opening their doors for free as part of this year's Open House festival.</span><span class="zh">Time Out精選六間今年Open House節免費開放參觀的特色住宅。</span></p>
+        <span class="meta"><span class="cat"><span class="en">What's On</span><span class="zh">好去處</span></span>Time Out London</span>
+      </div>
+      <img class="thumb" src="https://media.timeout.com/images/106434390/image.jpg" alt="" loading="lazy">
+    </div>
+    <div class="row card" data-cat="whatson">
+      <div class="txt">
+        <a class="headline" href="https://www.timeout.com/london/things-to-do/twenty-brilliant-beaches-near-london" target="_blank" rel="noopener"><span class="en">Every single one of these beaches is within two hours of London</span><span class="zh">二十個距倫敦兩小時內的海灘</span></a>
+        <p class="summary"><span class="en">Twenty sandy escapes reachable within two hours of the capital, perfect for a summer day out.</span><span class="zh">二十個距倫敦兩小時車程內的陽光海灘，夏日一日遊首選。</span></p>
+        <span class="meta"><span class="cat"><span class="en">What's On</span><span class="zh">好去處</span></span>Time Out London</span>
+      </div>
+      <img class="thumb" src="https://media.timeout.com/images/102781026/image.jpg" alt="" loading="lazy">
+    </div>
+  </section>
+
+  <section class="hk">
+    <div class="kicker">🇭🇰 <span class="en">Hong Kong</span><span class="zh">香港</span></div>
+    <div class="lead card" data-cat="business">
+      <div class="txt">
+        <a class="headline" href="https://hongkongfp.com/2026/08/05/cathay-pacifics-profit-soars-71-to-hk6-2-billion-amid-iran-war-and-surcharges-for-passengers/" target="_blank" rel="noopener"><span class="en">Cathay Pacific's profit soars 71% to HK$6.2 billion amid Iran war and surcharges for passengers</span><span class="zh">國泰業績：中東局勢及乘客附加費下 上半年純利急升71%至62億港元</span></a>
+        <p class="summary"><span class="en">Hong Kong's flag carrier posts its best first-half profit since 2010, as demand from passengers avoiding the Middle East offsets near-doubled fuel costs.</span><span class="zh">國泰航空錄得自2010年以來最佳上半年業績，乘客避開中東航線的需求抵銷燃油成本近倍升幅。</span></p>
+        <span class="meta"><span class="cat"><span class="en">Business</span><span class="zh">商業</span></span>Hong Kong Free Press</span>
+      </div>
+      <img class="thumb" src="https://hongkongfp.com/wp-content/uploads/2026/08/Cathay.jpg" alt="" loading="lazy">
+    </div>
+    <div class="row card" data-cat="politics">
+      <div class="txt">
+        <a class="headline" href="https://hongkongfp.com/2026/08/07/5-years-after-arrests-passports-returned-to-8-figures-not-charged-in-hong-kong-47-subversion-case/" target="_blank" rel="noopener"><span class="en">5 years after arrests, passports returned to 8 figures not charged in Hong Kong 47 subversion case</span><span class="zh">「35+初選案」8名未被起訴人士 被捕逾五年後獲發還護照</span></a>
+        <p class="summary"><span class="en">Eight people who were not prosecuted in the landmark national security case have had their passports returned, more than five years after arrest.</span><span class="zh">未被檢控的八人在香港47人國安案中被捕逾五年後，護照終獲當局發還。</span></p>
+        <span class="meta"><span class="cat"><span class="en">Politics</span><span class="zh">政治</span></span>Hong Kong Free Press</span>
+      </div>
+      <img class="thumb" src="https://hongkongfp.com/wp-content/uploads/2026/08/Passports-returned-to-8-people-not-prosecuted-in-landmark-national-security-case-five-years-after-arrests.jpg" alt="" loading="lazy">
+    </div>
+    <div class="row card" data-cat="conflict">
+      <div class="txt">
+        <a class="headline" href="https://hongkongfp.com/2026/08/07/pacific-nations-fail-to-agree-on-statement-condemning-china-missile-test/" target="_blank" rel="noopener"><span class="en">Pacific nations fail to agree on statement condemning China missile test</span><span class="zh">太平洋國家未能就譴責中國導彈試射發表聯合聲明</span></a>
+        <p class="summary"><span class="en">Diplomats meeting in Fiji could not agree a joint statement on China's recent nuclear-capable missile test, with New Zealand accusing Beijing of stalling.</span><span class="zh">於斐濟開會的太平洋外交官未能就中國近日核導彈試射達成聯合聲明，新西蘭指北京從中阻撓。</span></p>
+        <span class="meta"><span class="cat"><span class="en">Conflict</span><span class="zh">衝突局勢</span></span>Hong Kong Free Press</span>
+      </div>
+      <img class="thumb" src="https://hongkongfp.com/wp-content/uploads/2026/08/Pacific.jpg" alt="" loading="lazy">
+    </div>
+    <div class="row card" data-cat="society">
+      <div class="txt">
+        <a class="headline" href="https://news.rthk.hk/rthk/en/component/k2/1865207-20260806.htm" target="_blank" rel="noopener"><span class="en">Police operation takes down loan shark syndicate</span><span class="zh">警方搗破大型高利貸集團</span></a>
+        <p class="summary"><span class="en">Officers say they dismantled a large-scale syndicate that lent more than HK$200 million illicitly to over 2,000 borrowers.</span><span class="zh">警方表示搗破一個向逾2,000名借款人非法放貸逾兩億港元的大型高利貸集團。</span></p>
+        <span class="meta"><span class="cat"><span class="en">Society</span><span class="zh">社會</span></span>RTHK</span>
+      </div>
+      <img class="thumb" src="https://newsstatic.rthk.hk/images/mfile_1865207_1_M_20260806125400.jpg" alt="" loading="lazy">
+    </div>
+    <div class="row card" data-cat="tech">
+      <div class="txt">
+        <a class="headline" href="https://news.rthk.hk/rthk/en/component/k2/1864912-20260804.htm" target="_blank" rel="noopener"><span class="en">Surge in licence tests fuels optimism over November ride-hailing launch</span><span class="zh">考牌人數急增 網約車11月開通添樂觀</span></a>
+        <p class="summary"><span class="en">A legislator says Hong Kong is on track to find enough drivers for the 10,000 ride-hailing vehicles debuting in November.</span><span class="zh">有議員表示，香港有望為11月推出的一萬輛網約車招募足夠司機。</span></p>
+        <span class="meta"><span class="cat"><span class="en">Tech</span><span class="zh">科技</span></span>RTHK</span>
+      </div>
+      <img class="thumb" src="https://newsstatic.rthk.hk/images/mfile_1864912_1_M_20260804103853.jpg" alt="" loading="lazy">
+    </div>
+    <div class="row card" data-cat="business">
+      <div class="txt">
+        <a class="headline" href="https://www.thestandard.com.hk/finance/article/339326" target="_blank" rel="noopener"><span class="en">Hang Seng Index rises on Friday on China's strong export data</span><span class="zh">中國出口數據勝預期 恒指周五向上</span></a>
+        <p class="summary"><span class="en">Hong Kong stocks gained as investors responded positively to better-than-expected Chinese trade figures.</span><span class="zh">內地貿易數據勝市場預期，帶動港股周五向上。</span></p>
+        <span class="meta"><span class="cat"><span class="en">Business</span><span class="zh">商業</span></span>The Standard</span>
+      </div>
+      <img class="thumb" src="https://image.hkstandard.com.hk/f/1200p0/0x0/100/none/1798de099697239c8632b1a452882c48/2025-04/MKT.jpg" alt="" loading="lazy">
+    </div>
+    <div class="row card" data-cat="society">
+      <div class="txt">
+        <a class="headline" href="https://hongkongfp.com/2026/08/07/hong-kong-police-arrest-16-over-bar-fight-murder/" target="_blank" rel="noopener"><span class="en">Hong Kong police arrest 16 over bar fight murder</span><span class="zh">尖沙咀酒吧兇殺案 警方拘捕16人</span></a>
+        <p class="summary"><span class="en">Police have arrested 16 people over the killing of a 32-year-old businessman during a Tsim Sha Tsui bar fight.</span><span class="zh">一名32歲商人於尖沙咀酒吧打鬥中遇害，警方已就此拘捕16人。</span></p>
+        <span class="meta"><span class="cat"><span class="en">Society</span><span class="zh">社會</span></span>Hong Kong Free Press</span>
+      </div>
+      <img class="thumb" src="https://hongkongfp.com/wp-content/uploads/2026/08/Hong-Kong-police-arrest-16-over-bar-fight-murder.jpg" alt="" loading="lazy">
+    </div>
+    <div class="row card" data-cat="business">
+      <div class="txt">
+        <a class="headline" href="https://news.rthk.hk/rthk/en/component/k2/1865230-20260806.htm" target="_blank" rel="noopener"><span class="en">CLP profit rises 6.6% to HK$6b in first half</span><span class="zh">中電上半年純利升6.6%至60億港元</span></a>
+        <p class="summary"><span class="en">The power firm says earnings growth was driven by steady demand and stable fuel costs in the first half of the year.</span><span class="zh">電力公司表示，今年上半年盈利增長受惠於穩定需求及燃料成本。</span></p>
+        <span class="meta"><span class="cat"><span class="en">Business</span><span class="zh">商業</span></span>RTHK</span>
+      </div>
+      <img class="thumb" src="https://newsstatic.rthk.hk/images/mfile_1865230_1_M_20260806162612.jpg" alt="" loading="lazy">
+    </div>
+  </section>
+
+  <section class="global">
+    <div class="kicker">🌍 <span class="en">Global</span><span class="zh">國際</span></div>
+    <div class="lead card" data-cat="conflict">
+      <div class="txt">
+        <a class="headline" href="https://www.bbc.co.uk/news/articles/ckg9d3eyeggo" target="_blank" rel="noopener"><span class="en">Iran says deal with Oman on Strait of Hormuz is in final stages</span><span class="zh">伊朗稱與阿曼就霍爾木茲海峽協議已達最後階段</span></a>
+        <p class="summary"><span class="en">Neither the US nor Oman have commented on the proposed agreement over the vital shipping waterway.</span><span class="zh">美國及阿曼均未就這項涉及重要航道的協議置評。</span></p>
+        <span class="meta"><span class="cat"><span class="en">Conflict</span><span class="zh">衝突局勢</span></span>BBC</span>
+      </div>
+      <img class="thumb" src="https://ichef.bbci.co.uk/ace/branded_news/1200/cpsprodpb/d689/live/d1fc7070-9171-11f1-b2ab-0dd01740f9f6.jpg" alt="" loading="lazy">
+    </div>
+    <div class="row card" data-cat="tech">
+      <div class="txt">
+        <a class="headline" href="https://www.washingtonpost.com/technology/2026/08/06/new-mexico-judge-orders-meta-pay-567-million-child-harms-case/" target="_blank" rel="noopener"><span class="en">Judge orders Meta to pay $567 million in New Mexico child safety case</span><span class="zh">法官下令Meta就新墨西哥州兒童安全案賠5.67億美元</span></a>
+        <p class="summary"><span class="en">The ruling adds to $375m in fines already ordered, bringing Meta's total penalty in the case to $942m.</span><span class="zh">加上早前已判的3.75億美元罰款，Meta在此案的總罰款達9.42億美元。</span></p>
+        <span class="meta"><span class="cat"><span class="en">Tech</span><span class="zh">科技</span></span>Washington Post</span>
+      </div>
+      <div class="thumb ph">📰</div>
+    </div>
+    <div class="row card" data-cat="health">
+      <div class="txt">
+        <a class="headline" href="https://www.theguardian.com/world/2026/aug/06/ebola-virus-drc-mutating" target="_blank" rel="noopener"><span class="en">Ebola virus behind massive outbreak in DRC could be mutating, officials say</span><span class="zh">官員稱剛果（金）大規模伊波拉疫情病毒或正變異</span></a>
+        <p class="summary"><span class="en">Cases have passed 4,000 and the health watchdog plans a door-to-door search for patients in a major escalation.</span><span class="zh">確診個案已逾4,000宗，衛生監察機構計劃逐戶搜尋病患，大規模升級應對。</span></p>
+        <span class="meta"><span class="cat"><span class="en">Health</span><span class="zh">健康</span></span>The Guardian</span>
+      </div>
+      <img class="thumb" src="https://i.guim.co.uk/img/media/ed98f2b523345f1bc88d699c4fe06ba5b94e7248/322_60_2855_2283/master/2855.jpg?width=1200&amp;height=630&amp;quality=85&amp;auto=format&amp;fit=crop&amp;precrop=40:21,offset-x50,offset-y0&amp;overlay-align=bottom%2Cleft&amp;overlay-width=100p&amp;overlay-base64=L2ltZy9zdGF0aWMvb3ZlcmxheXMvdGctZGVmYXVsdC5wbmc&amp;enable=upscale&amp;s=a2c65708c2a54908290eb01461deea73" alt="" loading="lazy">
+    </div>
+    <div class="row card" data-cat="weather">
+      <div class="txt">
+        <a class="headline" href="https://www.theguardian.com/world/2026/aug/07/extreme-heat-breaks-temperature-records-central-eastern-europe" target="_blank" rel="noopener"><span class="en">Extreme heat breaks temperature records in central and eastern Europe</span><span class="zh">中歐及東歐極端高溫破紀錄</span></a>
+        <p class="summary"><span class="en">Slovakia hits a new high of 42C as authorities in Poland are forced to shut down two power plants.</span><span class="zh">斯洛伐克氣溫創新高達攝氏42度，波蘭當局被迫關閉兩座發電廠。</span></p>
+        <span class="meta"><span class="cat"><span class="en">Weather &amp; Climate</span><span class="zh">天氣氣候</span></span>The Guardian</span>
+      </div>
+      <img class="thumb" src="https://i.guim.co.uk/img/media/2ebedaa8c75a1b13e758228615da2c9adc8d2a3e/536_0_6000_4800/master/6000.jpg?width=1200&amp;height=630&amp;quality=85&amp;auto=format&amp;fit=crop&amp;precrop=40:21,offset-x50,offset-y0&amp;overlay-align=bottom%2Cleft&amp;overlay-width=100p&amp;overlay-base64=L2ltZy9zdGF0aWMvb3ZlcmxheXMvdGctZGVmYXVsdC5wbmc&amp;enable=upscale&amp;s=76e9c07ffe26c0bb138a120d6dc3e45b" alt="" loading="lazy">
+    </div>
+    <div class="row card" data-cat="business">
+      <div class="txt">
+        <a class="headline" href="https://www.usnews.com/news/top-news/articles/2026-08-06/trump-signs-executive-order-to-protect-us-polysilicon-industry" target="_blank" rel="noopener"><span class="en">Trump imposes 15% tariff on key chip material to counter China</span><span class="zh">特朗普向關鍵晶片原料徵15%關稅 反制中國</span></a>
+        <p class="summary"><span class="en">The move targets polysilicon, aiming to protect US chip and solar supply chains from dominant Chinese producers.</span><span class="zh">措施針對多晶矽，旨在保護美國晶片及太陽能供應鏈，免受中國主導生產商影響。</span></p>
+        <span class="meta"><span class="cat"><span class="en">Business</span><span class="zh">商業</span></span>US News</span>
+      </div>
+      <div class="thumb ph">📰</div>
+    </div>
+    <div class="row card" data-cat="politics">
+      <div class="txt">
+        <a class="headline" href="https://www.bbc.co.uk/news/articles/c0ejdj22zq9o" target="_blank" rel="noopener"><span class="en">Thousands of migrants still in Ceuta after border crisis, local leader says</span><span class="zh">當地首長稱邊境危機後數千移民仍滯留休達</span></a>
+        <p class="summary"><span class="en">The Spanish territory's mayor-president says around 100 deaths occurred as 78,000 migrants crossed from Morocco.</span><span class="zh">西班牙屬地休達市長表示，約7.8萬名移民從摩洛哥越境，造成約100人死亡。</span></p>
+        <span class="meta"><span class="cat"><span class="en">Politics</span><span class="zh">政治</span></span>BBC</span>
+      </div>
+      <img class="thumb" src="https://ichef.bbci.co.uk/ace/branded_news/1200/cpsprodpb/39b2/live/9d2b8000-91c3-11f1-a7ab-8b30adf0800a.jpg" alt="" loading="lazy">
+    </div>
+    <div class="row card" data-cat="society">
+      <div class="txt">
+        <a class="headline" href="https://www.theguardian.com/world/2026/aug/06/nigerian-security-forces-free-hostages-abducted-by-militants" target="_blank" rel="noopener"><span class="en">Nigerian security forces free more than 300 hostages in 'largest single-day recovery'</span><span class="zh">尼日利亞安全部隊「單日最大規模」救出逾300名人質</span></a>
+        <p class="summary"><span class="en">The president hails an operation rescuing captives held in the dense forests of Kainji Lake national park.</span><span class="zh">總統讚揚此次行動，成功救出被困於凱恩吉湖國家公園密林中的人質。</span></p>
+        <span class="meta"><span class="cat"><span class="en">Society</span><span class="zh">社會</span></span>The Guardian</span>
+      </div>
+      <img class="thumb" src="https://i.guim.co.uk/img/media/62045eac3aead8107b88f33dd07b04186a7000ca/0_0_3506_2805/master/3506.jpg?width=1200&amp;height=630&amp;quality=85&amp;auto=format&amp;fit=crop&amp;precrop=40:21,offset-x50,offset-y0&amp;overlay-align=bottom%2Cleft&amp;overlay-width=100p&amp;overlay-base64=L2ltZy9zdGF0aWMvb3ZlcmxheXMvdGctZGVmYXVsdC5wbmc&amp;enable=upscale&amp;s=3a5f03f5560ed870c32ed936b805edeb" alt="" loading="lazy">
+    </div>
+    <div class="row card" data-cat="conflict">
+      <div class="txt">
+        <a class="headline" href="https://www.bbc.co.uk/news/articles/cwymv212xrxo" target="_blank" rel="noopener"><span class="en">Ukraine hits two oil refineries deep in Russian territory</span><span class="zh">烏克蘭深入俄羅斯境內擊中兩座煉油廠</span></a>
+        <p class="summary"><span class="en">Ukraine's president says the strikes aim to limit revenues Russia uses to finance its war.</span><span class="zh">烏克蘭總統表示，襲擊旨在削減俄羅斯用以支持戰爭的收入。</span></p>
+        <span class="meta"><span class="cat"><span class="en">Conflict</span><span class="zh">衝突局勢</span></span>BBC</span>
+      </div>
+      <img class="thumb" src="https://ichef.bbci.co.uk/ace/branded_news/1200/cpsprodpb/4e4c/live/d37c5f10-9184-11f1-9587-294e25c71c14.png" alt="" loading="lazy">
+    </div>
+    <div class="brief">
+      <h3><span class="en">World in Brief</span><span class="zh">國際簡訊</span></h3>
+      <ul class="brief-grid">
+        <li><a href="https://www.theguardian.com/us-news/2026/aug/05/us-state-department-consulate-closures" target="_blank" rel="noopener"><span class="en">US to shut five consulates as critics fear China could fill diplomatic vacuum</span><span class="zh">美國擬關閉五個領事館 惹憂中國填補外交真空</span></a><span class="src">Guardian</span></li>
+        <li><a href="https://www.bbc.co.uk/news/articles/cj63966j95yo" target="_blank" rel="noopener"><span class="en">Trump again tries to limit US birthright citizenship with new executive orders</span><span class="zh">特朗普再簽行政令 限制美國出生公民權</span></a><span class="src">BBC</span></li>
+        <li><a href="https://www.bbc.co.uk/news/articles/cqjxgx5y51lo" target="_blank" rel="noopener"><span class="en">South Korea space agency shares Moon images after SpaceX rocket debris crash</span><span class="zh">SpaceX火箭殘骸墜月 南韓太空總署公布月球影像</span></a><span class="src">BBC</span></li>
+        <li><a href="https://www.bbc.co.uk/news/articles/ckgdmdr0lmgo" target="_blank" rel="noopener"><span class="en">Houthi attacks reportedly kill at least 30 Yemeni government forces</span><span class="zh">胡塞武裝據報襲擊 造成至少30名也門政府軍死亡</span></a><span class="src">BBC</span></li>
+        <li><a href="https://www.theguardian.com/technology/2026/aug/06/students-ai-cheating-schools-denmark" target="_blank" rel="noopener"><span class="en">Danish pupils will have to orally defend essays in attempt to combat AI cheating</span><span class="zh">丹麥學生須口頭答辯論文 以打擊AI造假</span></a><span class="src">Guardian</span></li>
+        <li><a href="https://www.theguardian.com/world/2026/aug/06/leipzig-drone-bomb-found-near-ukrainian-plane-carrying-ammunition" target="_blank" rel="noopener"><span class="en">Leipzig drone bomb was found near Ukrainian plane carrying ammunition, say police</span><span class="zh">萊比錫機場發現無人機炸彈 鄰近載彈藥烏克蘭飛機</span></a><span class="src">Guardian</span></li>
+        <li><a href="https://www.theguardian.com/games/2026/aug/06/trump-tariffs-refund-fuels-profit-spike-nintendo" target="_blank" rel="noopener"><span class="en">'Mamma mia!': Trump tariffs refund ignites 53% profit spike at Nintendo</span><span class="zh">特朗普關稅退款帶動任天堂利潤急升53%</span></a><span class="src">Guardian</span></li>
+        <li><a href="https://www.theguardian.com/world/2026/aug/05/new-zealand-capital-rare-snow-wellington-dunedin-ski-down-worlds-steepest-street" target="_blank" rel="noopener"><span class="en">New Zealand capital delights in rare snowfall as southern city residents ski down world's steepest street</span><span class="zh">新西蘭首都罕見降雪 南部居民滑雪衝下全球最陡街道</span></a><span class="src">Guardian</span></li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="buzz">
+    <div class="kicker">💬 <span class="en">Talking Points</span><span class="zh">網上熱話</span></div>
+    <div class="buzz-grid">
+      <div class="buzz-col">
+        <h3>r/london</h3>
+        <ul>
+          <li><a href="https://www.reddit.com/r/london/comments/1vhaa9g/update_walking_200km_from_london_to_birmingham/" target="_blank" rel="noopener"><span class="en">Update: Walking 200km from London to Birmingham tonight for a bag of chips</span><span class="zh">更新：今晚為咗一包薯條 徒步200公里由倫敦去伯明翰</span></a></li>
+          <li><a href="https://www.reddit.com/r/london/comments/1vh2fka/londons_price_of_happiness_is_116k/" target="_blank" rel="noopener"><span class="en">London's "Price of happiness" is £116k</span><span class="zh">倫敦「幸福價格」為11.6萬英鎊</span></a></li>
+          <li><a href="https://www.reddit.com/r/london/comments/1vgzzjj/women_arrested_over_covent_garden_stabbing_may/" target="_blank" rel="noopener"><span class="en">Women arrested over Covent Garden stabbing 'may not be fit enough to be charged'</span><span class="zh">Covent Garden斬人案被捕女子「或未夠健康狀況被起訴」</span></a></li>
+        </ul>
+      </div>
+      <div class="buzz-col">
+        <h3>r/HongKong</h3>
+        <ul>
+          <li><a href="https://www.reddit.com/r/HongKong/comments/1vh11f7/chinas_superrich_in_shock_and_hunting_for_cash_as/" target="_blank" rel="noopener"><span class="en">China's super-rich 'in shock' and hunting for cash as Beijing issues surprise tax on offshore trusts</span><span class="zh">北京突推離岸信託稅 內地富豪「震驚」急籌現金</span></a></li>
+          <li><a href="https://www.reddit.com/r/HongKong/comments/1vh15uf/mother_jailed_for_22_years_for_starving_son_to/" target="_blank" rel="noopener"><span class="en">Mother jailed for 22 years for starving son to death</span><span class="zh">母親餓死親兒 判囚22年</span></a></li>
+          <li><a href="https://www.reddit.com/r/HongKong/comments/1vh9q30/moon_rising_over_hmz_bridge/" target="_blank" rel="noopener"><span class="en">Moon rising over HMZ Bridge</span><span class="zh">港珠澳大橋上的月出</span></a></li>
+        </ul>
+      </div>
+    </div>
+    <p class="note"><span class="en">Unverified community chatter from Reddit, ranked by today's upvotes — not editorially checked.</span><span class="zh">來自Reddit的未經核實網民討論（按今日讚好排序），未經編輯查證。</span></p>
+  </section>
+
+  <footer>
+    <span class="en">Headlines gathered by RSS and web checks from the listed outlets · Images link from source sites · Generated Friday 7 August 2026 at 10:18 UK time</span><span class="zh">標題經RSS及網上查證自所列媒體收集 · 圖片來自原文網站 · 生成於2026年8月7日 10:18（英國時間）</span>
+  </footer>
+</div>
+<script>
+(function () {
+  var body = document.body;
+  var saved = null;
+  try { saved = localStorage.getItem('news-dash-lang'); } catch (e) {}
+  if (saved === 'zh' || saved === 'en') body.setAttribute('data-lang', saved);
+  document.documentElement.lang = body.getAttribute('data-lang') === 'zh' ? 'zh-HK' : 'en';
+
+  document.getElementById('langBtn').addEventListener('click', function () {
+    var next = body.getAttribute('data-lang') === 'en' ? 'zh' : 'en';
+    body.setAttribute('data-lang', next);
+    document.documentElement.lang = next === 'zh' ? 'zh-HK' : 'en';
+    try { localStorage.setItem('news-dash-lang', next); } catch (e) {}
+  });
+
+  var refreshBtn = document.getElementById('refreshBtn');
+  refreshBtn.addEventListener('click', function () {
+    var isHttp = location.protocol === 'http:' || location.protocol === 'https:';
+    if (!isHttp) {
+      alert(body.getAttribute('data-lang') === 'zh'
+        ? '要即時更新新聞，請經 http://localhost:8793 開啟此頁。'
+        : 'To fetch fresh news, open this page via http://localhost:8793.');
+      location.reload();
+      return;
+    }
+    refreshBtn.disabled = true;
+    refreshBtn.textContent = body.getAttribute('data-lang') === 'zh' ? '⏳ 更新中（約3–5分鐘）…' : '⏳ Fetching fresh news (3–5 min)…';
+    fetch('/refresh', { method: 'POST' }).then(function () {
+      var iv = setInterval(function () {
+        fetch('/status').then(function (r) { return r.json(); }).then(function (s) {
+          if (!s.running) { clearInterval(iv); location.reload(); }
+        }).catch(function () {});
+      }, 5000);
+    }).catch(function () { refreshBtn.disabled = false; location.reload(); });
+  });
+
+  document.getElementById('dateSel').addEventListener('change', function () {
+    var inArchive = location.pathname.indexOf('/archive/') !== -1;
+    var target = this.value;
+    if (inArchive) {
+      target = target === 'dashboard.html' ? '../dashboard.html' : target.replace('archive/', '');
+    }
+    location.href = target;
+  });
+
+  document.getElementById('filters').addEventListener('click', function (ev) {
+    var chip = ev.target.closest('.chip');
+    if (!chip) return;
+    document.querySelectorAll('.chip').forEach(function (c) { c.classList.remove('active'); });
+    chip.classList.add('active');
+    var cat = chip.getAttribute('data-cat');
+    var anyVisible = false;
+    document.querySelectorAll('.card').forEach(function (card) {
+      var visible = cat === 'all' || card.getAttribute('data-cat') === cat;
+      card.classList.toggle('hide', !visible);
+      if (visible) anyVisible = true;
+    });
+
+    document.querySelectorAll('section').forEach(function (section) {
+      var cards = section.querySelectorAll('.card');
+      if (!cards.length) return;
+      var hasVisibleCard = Array.from(cards).some(function (card) {
+        return !card.classList.contains('hide');
+      });
+      section.classList.toggle('hide', cat !== 'all' && !hasVisibleCard);
+    });
+
+    var existing = document.getElementById('emptyMsg');
+    if (existing) existing.remove();
+    if (!anyVisible) {
+      var msg = document.createElement('div');
+      msg.id = 'emptyMsg';
+      msg.className = 'empty-msg';
+      msg.innerHTML = '<span class="en">No stories in this category today.</span><span class="zh">今日此類別暫無新聞。</span>';
+      document.getElementById('filters').insertAdjacentElement('afterend', msg);
+    }
+  });
+
+  document.querySelectorAll('img.thumb').forEach(function (img) {
+    img.addEventListener('error', function () {
+      var ph = document.createElement('div');
+      ph.className = 'thumb ph';
+      ph.textContent = '📰';
+      img.replaceWith(ph);
+    });
+  });
+})();
+</script>
+</body>
+</html>
