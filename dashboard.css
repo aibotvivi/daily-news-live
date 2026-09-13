@@ -24,6 +24,12 @@
   --ok: #2E6B3E;
   --photo-filter: none;
   color-scheme: light;
+  --lean-l: #3E5F8A;        /* left: a muted blue */
+  --lean-l-bg: #E8EEF6;
+  --lean-r: #8A5A3E;        /* right: a warm neutral, deliberately not red */
+  --lean-r-bg: #F5ECE4;
+  --lean-c: #6B6660;
+  --lean-c-bg: #ECE9E2;
 }
 
 /* Three states, in the order they must appear:
@@ -53,6 +59,9 @@
     --photo-filter: brightness(.9) contrast(1.02);
     /* Makes the date input's native calendar glyph light instead of near-black. */
     color-scheme: dark;
+    --lean-l: #8FB0DC; --lean-l-bg: #1E2733;
+    --lean-r: #D9A67E; --lean-r-bg: #302319;
+    --lean-c: #A39D93; --lean-c-bg: #26231D;
   }
 }
 :root[data-theme="dark"] {
@@ -75,6 +84,9 @@
     --photo-filter: brightness(.9) contrast(1.02);
     /* Makes the date input's native calendar glyph light instead of near-black. */
     color-scheme: dark;
+    --lean-l: #8FB0DC; --lean-l-bg: #1E2733;
+    --lean-r: #D9A67E; --lean-r-bg: #302319;
+    --lean-c: #A39D93; --lean-c-bg: #26231D;
 }
 
 * { box-sizing: border-box; }
@@ -483,3 +495,81 @@ body.zh-only .l-zh { display: inline; }
    serif needs to be the family in use once it *is* the headline. */
 body.zh-only .lead-title, body.zh-only h3 { font-family: var(--hk); line-height: 1.25; }
 body.zh-only .lead-title { letter-spacing: 0; }
+
+
+/* ---------------------------------------------------------- two sides */
+
+.two-sides { padding: 26px 0 8px; border-top: 3px double var(--ink); margin-top: 8px; }
+.sec-head--band { margin-bottom: 18px; }
+.sec-head--band .sec-meta { text-transform: none; letter-spacing: 0; font-size: 12px; }
+
+.tw-topic { padding: 18px 0 20px; border-top: 1px solid var(--rule); }
+.tw-topic:first-of-type { border-top: 0; padding-top: 4px; }
+.tw-head { display: flex; align-items: baseline; justify-content: space-between; gap: 14px; }
+.tw-head h3 { margin: 0; font-size: 22px; font-weight: 700; letter-spacing: -.01em; }
+
+/* The factual strip: a wire headline, verbatim, above the argument. */
+.tw-strip {
+  margin: 10px 0 14px; padding: 9px 12px;
+  background: var(--paper-tint); border-left: 3px solid var(--ink);
+  font-size: 15px; line-height: 1.45;
+}
+.tw-strip b { font-family: var(--sans); font-size: 10px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); margin-right: 6px; }
+
+.tw-cols { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 0 28px; }
+.tw-col--wide { grid-column: 1 / -1; }
+.tw-col-head {
+  font-family: var(--sans); font-size: 10px; letter-spacing: .1em; text-transform: uppercase;
+  color: var(--muted); padding: 6px 0; border-bottom: 1px solid var(--rule); margin-bottom: 4px;
+}
+.tw-col-head i { font-style: italic; text-transform: none; letter-spacing: 0; }
+.tw-row { margin-top: 14px; }
+.tw-row .tw-card { display: inline-block; width: calc(50% - 14px); vertical-align: top; margin-right: 24px; }
+.tw-row .tw-card:nth-child(odd) { margin-right: 0; }
+.tw-row--unk { opacity: .8; }
+
+.tw-card { padding: 9px 0; border-bottom: 1px solid var(--rule-light); transition: background .3s; }
+.tw-card h4 { margin: 0; font-size: 16.5px; line-height: 1.25; font-weight: 700; text-wrap: pretty; }
+.tw-by {
+  font-family: var(--sans); font-size: 11px; color: var(--muted); margin-top: 4px;
+  display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
+}
+.tw-card--lit { background: var(--paper-tint); box-shadow: -8px 0 0 var(--paper-tint), 8px 0 0 var(--paper-tint); }
+
+/* Lean pills are metadata, not the point: small, low-saturation. */
+.pill {
+  display: inline-block; font-family: var(--sans); font-size: 9.5px; letter-spacing: .06em;
+  text-transform: uppercase; padding: 2px 6px; border-radius: 2px;
+  color: var(--lean-c); background: var(--lean-c-bg);
+}
+.pill--left, .pill--lean-left { color: var(--lean-l); background: var(--lean-l-bg); }
+.pill--right, .pill--lean-right { color: var(--lean-r); background: var(--lean-r-bg); }
+.pill--intl, .pill--centre, .pill--unknown { color: var(--lean-c); background: var(--lean-c-bg); }
+
+.tw-other {
+  font: inherit; font-family: var(--sans); font-size: 10px; letter-spacing: .06em; text-transform: uppercase;
+  background: none; border: 1px solid var(--rule); color: var(--muted); padding: 2px 7px; cursor: pointer;
+  margin-left: auto;
+}
+.tw-other:hover { color: var(--ink); border-color: var(--ink); }
+
+/* The balance bar: a two-tone strip and the number. Hidden by the renderer
+   when fewer than four items are classified -- a ratio of two is not one. */
+.tw-balance { display: flex; align-items: center; gap: 10px; margin-top: 14px; }
+.tw-bar { flex: 0 0 160px; height: 5px; background: var(--lean-r-bg); position: relative; overflow: hidden; }
+.tw-bar i { display: block; height: 100%; background: var(--lean-l); }
+.tw-bal-n { font-family: var(--sans); font-size: 10px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+
+.tw-foot {
+  display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap;
+  margin-top: 18px; padding-top: 12px; border-top: 1px solid var(--rule);
+}
+.tw-foot .tw-balance { margin-top: 0; }
+.tw-credit { font-family: var(--sans); font-size: 10px; letter-spacing: .06em; text-transform: uppercase; color: var(--faint); }
+.tw-credit a { text-decoration: underline; text-underline-offset: 2px; }
+
+@media (max-width: 760px) {
+  .tw-cols { grid-template-columns: minmax(0, 1fr); }
+  .tw-row .tw-card { display: block; width: auto; margin-right: 0; }
+}
+@media print { .tw-other { display: none; } }
