@@ -623,7 +623,11 @@ body.zh-only .lead-title { letter-spacing: 0; }
 .ev-body b { font-size: 15px; line-height: 1.25; font-weight: 700; text-wrap: pretty; }
 .ev-meta { font-family: var(--sans); font-size: 11px; color: var(--muted); }
 .pill--kind { color: var(--lean-c); background: var(--lean-c-bg); margin-left: 4px; }
-.ev-more { font-family: var(--sans); font-size: 10.5px; color: var(--faint); padding: 5px 0 0 54px; }
+.ev-more { display: block; font-family: var(--sans); font-size: 10.5px; color: var(--muted); padding: 5px 0 0 54px; text-decoration: underline; text-underline-offset: 2px; }
+.ev-more:hover { color: var(--red); }
+.ev-block-head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+.ev-block-head .brief-head { margin: 0; }
+.ev-block-head .ev-all { margin-top: 0; padding: 0; border-top: 0; color: var(--red); }
 
 /* ---------------------------------------------------------- events page */
 
