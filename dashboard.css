@@ -648,3 +648,61 @@ body.zh-only .lead-title { letter-spacing: 0; }
   font-family: var(--sans); font-size: 11px; letter-spacing: .08em; text-transform: uppercase; font-weight: 600;
 }
 .ev-all:hover { color: var(--red); }
+
+
+/* ---------------------------------------------------------- zones */
+
+/* The page is four zones by kind of content -- news, events, commentary,
+   talking points -- each announced by a header that says what it is, with a
+   sticky strip to jump between them. Nothing is interleaved across kinds. */
+.jump {
+  position: sticky; top: 0; z-index: 30;
+  display: flex; align-items: center; gap: 4px; flex-wrap: wrap;
+  padding: 8px 0; margin: 0 -40px; padding-left: 40px; padding-right: 40px;
+  background: var(--paper); border-bottom: 1px solid var(--rule);
+  font-family: var(--sans); font-size: 11px; letter-spacing: .08em; text-transform: uppercase;
+}
+.jump-label { color: var(--faint); margin-right: 8px; }
+.jump a { padding: 5px 10px; border: 1px solid transparent; color: var(--ink); }
+.jump a:hover { border-color: var(--rule); color: var(--red); }
+.jump a b { font-weight: 500; color: var(--muted); margin-left: 3px; }
+
+.zone { padding: 6px 0 10px; scroll-margin-top: 48px; }
+.zone + .zone { border-top: 3px double var(--ink); margin-top: 18px; padding-top: 20px; }
+.zone-head { display: flex; align-items: baseline; gap: 14px; flex-wrap: wrap; margin-bottom: 14px; }
+.zone-head h2 {
+  margin: 0; font-family: var(--sans); font-size: 13px; letter-spacing: .18em; text-transform: uppercase;
+  font-weight: 700; scroll-margin-top: 48px;
+}
+.zone-head--accent h2 { color: var(--red); }
+.zone-sub { font-size: 14px; color: var(--muted); flex: 1 1 auto; }
+.zone-count { font-family: var(--sans); font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+.zone-head .ev-all { margin: 0; padding: 0; border: 0; color: var(--red); }
+
+.zone--news .zone-head { padding-top: 12px; }
+.zone--news .layout { border-top: 1px solid var(--rule); }
+
+.ev-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 0 28px; }
+.ev-grid .ev-day { margin-top: 0; padding-bottom: 8px; }
+.ev-grid .ev-body b { font-size: 15px; }
+
+.tw-grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: 22px; }
+.tw-cols { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 0 28px; }
+.tw-cols--one { grid-template-columns: minmax(0, 1fr); columns: 2; column-gap: 28px; display: block; }
+.tw-cols--one .tw-card { break-inside: avoid; }
+.tw-col { min-width: 0; }
+@media (max-width: 760px) { .tw-cols { grid-template-columns: minmax(0, 1fr); } .tw-cols--one { columns: 1; } }
+.tw-grid .tw-topic--inline { margin-top: 0; }
+.tw-tail { margin-top: 22px; padding-top: 14px; border-top: 1px solid var(--rule); }
+.tw-tail-rows { columns: 2; column-gap: 28px; }
+.tw-tail-rows .cont-row { break-inside: avoid; }
+
+.tp-zone-body { columns: 2; column-gap: 28px; }
+.tp-zone-body .tp-group { break-after: avoid; }
+.tp-zone-body .tp-row { break-inside: avoid; }
+.tp-zone-body .rail-head { display: none; }
+
+@media (max-width: 760px) {
+  .jump { margin: 0 -18px; padding-left: 18px; padding-right: 18px; }
+  .tw-tail-rows, .tp-zone-body { columns: 1; }
+}
