@@ -624,3 +624,23 @@ body.zh-only .lead-title { letter-spacing: 0; }
 .ev-meta { font-family: var(--sans); font-size: 11px; color: var(--muted); }
 .pill--kind { color: var(--lean-c); background: var(--lean-c-bg); margin-left: 4px; }
 .ev-more { font-family: var(--sans); font-size: 10.5px; color: var(--faint); padding: 5px 0 0 54px; }
+
+/* ---------------------------------------------------------- events page */
+
+.paper--narrow { max-width: 900px; }
+.masthead--small h1 { font-size: clamp(30px, 4vw, 44px); }
+.topbar-left a { text-transform: none; letter-spacing: 0; font-size: 12px; }
+.ev-intro { margin: 8px 0 14px; color: var(--muted); font-size: 15px; }
+.chips--left { justify-content: flex-start; padding: 8px 0; border-bottom: 0; }
+.chips--price { padding-top: 0; }
+.ev-note { font-family: var(--sans); font-size: 11px; color: var(--faint); align-self: center; }
+.ev-count { font-family: var(--sans); font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); padding: 10px 0 4px; border-top: 1px solid var(--rule); }
+.paper--narrow .ev-day { margin-top: 18px; }
+.paper--narrow .ev-day-head { font-size: 13px; padding: 8px 0 6px; border-bottom: 2px solid var(--ink); }
+.paper--narrow .ev-body b { font-size: 16.5px; }
+.ev-src { font-size: 10px; letter-spacing: .06em; text-transform: uppercase; color: var(--faint); margin-left: 4px; }
+.ev-all {
+  display: block; margin-top: 12px; padding: 9px 0; border-top: 2px solid var(--ink);
+  font-family: var(--sans); font-size: 11px; letter-spacing: .08em; text-transform: uppercase; font-weight: 600;
+}
+.ev-all:hover { color: var(--red); }
