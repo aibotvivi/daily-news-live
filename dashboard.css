@@ -607,3 +607,20 @@ body.zh-only .lead-title { letter-spacing: 0; }
 .tube-close:hover { color: var(--ink); border-color: var(--ink); }
 .rail-note--lead { margin: -6px 0 6px; }
 @media print { .tube-btn, .tube-dlg { display: none; } }
+
+/* ---------------------------------------------------------- events this week */
+
+.ev-block { margin-top: 22px; }
+.ev-day { margin-top: 12px; }
+.ev-day-head {
+  display: flex; align-items: baseline; justify-content: space-between; gap: 10px;
+  font-family: var(--sans); font-size: 11px; letter-spacing: .1em; text-transform: uppercase;
+  font-weight: 600; color: var(--ink); padding: 6px 0 4px; border-bottom: 1px solid var(--rule);
+}
+.ev-row { display: flex; gap: 10px; padding: 7px 0; border-bottom: 1px solid var(--rule-light); }
+.ev-time { flex: 0 0 44px; font-family: var(--sans); font-size: 11px; color: var(--muted); padding-top: 2px; }
+.ev-body { min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+.ev-body b { font-size: 15px; line-height: 1.25; font-weight: 700; text-wrap: pretty; }
+.ev-meta { font-family: var(--sans); font-size: 11px; color: var(--muted); }
+.pill--kind { color: var(--lean-c); background: var(--lean-c-bg); margin-left: 4px; }
+.ev-more { font-family: var(--sans); font-size: 10.5px; color: var(--faint); padding: 5px 0 0 54px; }
