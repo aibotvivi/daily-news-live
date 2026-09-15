@@ -706,3 +706,17 @@ body.zh-only .lead-title { letter-spacing: 0; }
   .jump { margin: 0 -18px; padding-left: 18px; padding-right: 18px; }
   .tw-tail-rows, .tp-zone-body { columns: 1; }
 }
+
+
+/* ---------------------------------------------------------- event thumbnails */
+
+.ev-thumb {
+  flex: 0 0 56px; width: 56px; height: 56px; overflow: hidden;
+  background: var(--rule-light); border: 1px solid var(--rule); display: block;
+}
+.ev-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; filter: var(--photo-filter); }
+.ev-thumb--none { background: var(--paper-tint); }
+.ev-row { align-items: flex-start; }
+.ev-row .ev-time { flex-basis: 40px; }
+.paper--narrow .ev-thumb { flex-basis: 84px; width: 84px; height: 84px; }
+@media print { .ev-thumb img { filter: grayscale(1); } }

@@ -6,7 +6,7 @@
 <title>Daily News Dashboard — 2026-09-09</title>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Spectral:wght@400;600;700;800&family=Libre+Franklin:wght@400;500;600;700&family=Noto+Serif+HK:wght@400;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../dashboard.css?v=90ffe9eba6">
+<link rel="stylesheet" href="../dashboard.css?v=bc7627d344">
 </head>
 <body>
 <div class="paper">
@@ -180,6 +180,12 @@
 
   /* ---- a hotlinked news image that 404s leaves an empty grey well, which
      looks worse than no picture at all. Drop the frame instead. */
+  document.querySelectorAll('.ev-thumb img').forEach(function (img) {
+    img.addEventListener('error', function () {
+      var frame = img.closest('.ev-thumb');
+      if (frame) { frame.classList.add('ev-thumb--none'); img.remove(); }
+    });
+  });
   document.querySelectorAll('.photo img, .thumb img').forEach(function (img) {
     img.addEventListener('error', function () {
       var frame = img.closest('.photo, .thumb');
