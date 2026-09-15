@@ -720,3 +720,40 @@ body.zh-only .lead-title { letter-spacing: 0; }
 .ev-row .ev-time { flex-basis: 40px; }
 .paper--narrow .ev-thumb { flex-basis: 84px; width: 84px; height: 84px; }
 @media print { .ev-thumb img { filter: grayscale(1); } }
+
+/* ---------------------------------------------------------- events page v2 */
+
+.paper--events { max-width: 1240px; }
+.ev-filters {
+  position: sticky; top: 0; z-index: 30; background: var(--paper);
+  margin: 0 -40px; padding: 6px 40px 8px; border-bottom: 1px solid var(--rule);
+}
+.chips--days { border-bottom: 1px solid var(--rule-light); }
+.ev-filter-row { display: flex; align-items: center; gap: 6px 22px; flex-wrap: wrap; }
+.ev-filter-row .chips { padding: 6px 0; }
+.ev-search {
+  font: inherit; font-family: var(--sans); font-size: 12px; padding: 6px 10px; min-width: 240px;
+  border: 1px solid var(--rule); background: var(--field); color: var(--ink); margin-left: auto;
+}
+.ev-search:focus { outline: none; border-color: var(--ink); }
+.ev-filters .ev-count { border-top: 0; padding: 4px 0 0; }
+
+.paper--events .ev-day { margin-top: 26px; }
+.paper--events .ev-day-head { font-size: 14px; letter-spacing: .12em; padding: 8px 0 6px; border-bottom: 2px solid var(--ink); }
+.ev-slot { margin-top: 12px; }
+.ev-slot-head {
+  font-family: var(--sans); font-size: 10px; letter-spacing: .12em; text-transform: uppercase;
+  color: var(--muted); padding: 6px 0 4px; border-bottom: 1px solid var(--rule-light);
+}
+.ev-cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 14px 24px; padding-top: 10px; }
+.ev-card { display: flex; gap: 12px; align-items: flex-start; padding: 8px 0; border-bottom: 1px solid var(--rule-light); }
+.ev-card .ev-thumb { flex-basis: 72px; width: 72px; height: 72px; }
+.ev-card .ev-body { gap: 3px; }
+.ev-card .ev-time { flex: none; font-size: 10.5px; letter-spacing: .06em; }
+.ev-card b { font-size: 15px; line-height: 1.25; font-weight: 700; text-wrap: pretty; }
+
+@media (max-width: 760px) {
+  .ev-filters { margin: 0 -18px; padding: 6px 18px 8px; }
+  .ev-search { min-width: 0; width: 100%; margin-left: 0; }
+  .ev-cards { grid-template-columns: minmax(0, 1fr); }
+}
