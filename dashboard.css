@@ -702,9 +702,19 @@ body.zh-only .lead-title { letter-spacing: 0; }
 .tp-zone-body .tp-row { break-inside: avoid; }
 .tp-zone-body .rail-head { display: none; }
 
+/* Trending on X: the trend is the kicker, the headline behind it is the read. */
+.xt-body { columns: 2; column-gap: 28px; }
+.xt-row { break-inside: avoid; padding: 10px 0; border-top: 1px solid var(--rule-light); }
+.xt-top { display: flex; align-items: baseline; flex-wrap: wrap; gap: 4px 8px; margin-bottom: 4px; }
+.xt-term { font-family: var(--sans); font-size: 12px; font-weight: 700; letter-spacing: .04em; color: var(--red); text-decoration: none; }
+.xt-meta { font-family: var(--sans); font-size: 10px; color: var(--muted); }
+.xt-posts { margin-left: auto; font-family: var(--sans); font-size: 10px; color: var(--muted); text-decoration: none; }
+.xt-posts:hover, .xt-term:hover { text-decoration: underline; }
+.xt-head { font-size: 15px; line-height: 1.3; }
+
 @media (max-width: 760px) {
   .jump { margin: 0 -18px; padding-left: 18px; padding-right: 18px; }
-  .tw-tail-rows, .tp-zone-body { columns: 1; }
+  .tw-tail-rows, .tp-zone-body, .xt-body { columns: 1; }
 }
 
 
