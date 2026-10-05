@@ -145,7 +145,9 @@ a:hover { color: var(--red); }
   padding: 5px 10px;
   cursor: pointer;
 }
-.topbar button:last-child { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+/* The full refresh is the one dark button; keyed by id, because on an
+   archived edition it is absent and :last-child would blacken the 中文 toggle. */
+.topbar #refreshBtn { background: var(--ink); color: var(--paper); border-color: var(--ink); }
 
 /* ---------------------------------------------------------- masthead */
 
@@ -439,6 +441,28 @@ body.zh-only .l-zh { display: inline; }
   color: var(--muted);
 }
 .arc--now { border-color: var(--ink); background: var(--ink); color: var(--paper); font-weight: 700; }
+.arc { flex-direction: column; line-height: 1.05; text-decoration: none; }
+a.arc:hover { border-color: var(--ink); color: var(--ink); }
+.arc small { font-size: 8px; letter-spacing: .08em; text-transform: uppercase; }
+.arc--gap { border-style: dashed; color: var(--faint); background: none; opacity: .6; }
+
+/* Earlier / Later around the date picker. */
+.ed-picker { display: inline-flex; align-items: center; gap: 6px; }
+.ed-nav {
+  font-family: var(--sans); font-size: 11px; letter-spacing: .08em; text-transform: uppercase;
+  color: var(--ink); text-decoration: none; padding: 5px 4px; white-space: nowrap;
+}
+a.ed-nav:hover { color: var(--red); }
+.ed-nav--off { color: var(--faint); opacity: .55; }
+
+/* An older edition says so above the masthead, with the way back. */
+.archived-bar {
+  display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap;
+  margin: 10px 0 0; padding: 8px 12px; background: var(--paper-tint); border: 1px solid var(--rule);
+  font-family: var(--sans); font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted);
+}
+.archived-bar a { color: var(--red); text-decoration: none; font-weight: 700; }
+.archived-bar a:hover { text-decoration: underline; }
 
 .mix-row { display: flex; align-items: center; gap: 8px; font-family: var(--sans); font-size: 11px; color: var(--ink-2); margin-bottom: 7px; }
 .mix-name { width: 78px; flex: none; }
