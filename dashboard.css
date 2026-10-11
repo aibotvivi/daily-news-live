@@ -168,11 +168,26 @@ a:hover { color: var(--red); }
   color: var(--muted);
 }
 .news-search {
-  display: block; margin: 14px auto 0; width: min(360px, 100%); box-sizing: border-box;
-  font: inherit; font-family: var(--sans); font-size: 12px; padding: 6px 10px; text-align: center;
-  border: 1px solid var(--rule); background: var(--field); color: var(--ink);
+  display: flex; align-items: stretch; margin: 16px auto 0; width: min(440px, 100%);
+  box-sizing: border-box; border: 1.5px solid var(--ink); background: var(--field);
+  font-family: var(--sans); text-align: left;
 }
-.news-search:focus { outline: none; border-color: var(--ink); }
+.news-search:focus-within { box-shadow: 0 0 0 3px var(--rule-light); }
+.news-search-icon {
+  flex: none; width: 16px; height: 16px; align-self: center; margin-left: 11px;
+  fill: none; stroke: var(--muted); stroke-width: 2.2; stroke-linecap: round;
+}
+.news-search input {
+  flex: 1; min-width: 0; border: 0; background: transparent; color: var(--ink);
+  font: inherit; font-size: 14px; padding: 9px 10px;
+}
+.news-search input:focus { outline: none; }
+.news-search button {
+  flex: none; border: 0; border-left: 1.5px solid var(--ink); cursor: pointer;
+  background: var(--ink); color: var(--paper); font: inherit; font-size: 12px; font-weight: 600;
+  letter-spacing: .08em; text-transform: uppercase; padding: 0 16px;
+}
+.news-search button:hover { opacity: .85; }
 
 /* ---------------------------------------------------------- chips */
 
