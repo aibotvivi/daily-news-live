@@ -167,6 +167,12 @@ a:hover { color: var(--red); }
   text-transform: uppercase;
   color: var(--muted);
 }
+.news-search {
+  display: block; margin: 14px auto 0; width: min(360px, 100%); box-sizing: border-box;
+  font: inherit; font-family: var(--sans); font-size: 12px; padding: 6px 10px; text-align: center;
+  border: 1px solid var(--rule); background: var(--field); color: var(--ink);
+}
+.news-search:focus { outline: none; border-color: var(--ink); }
 
 /* ---------------------------------------------------------- chips */
 
